@@ -1,0 +1,88 @@
+@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400;1,600&family=Jost:wght@200;300;400;500&family=JetBrains+Mono:wght@300;400&display=swap');
+@import "tailwindcss";
+
+@theme {
+  --font-serif: "Cormorant Garamond", Georgia, serif;
+  --font-sans: "Jost", ui-sans-serif, system-ui, sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, SFMono-Regular, monospace;
+
+  --color-bone: #F4EFE6;
+  --color-bone-dark: #EDE7DB;
+  --color-navy: #091828;
+  --color-navy-light: #0D2137;
+  --color-gold: #A8844A;
+  --color-gold-light: #C9A96E;
+  --color-gold-cream: #E8D5B0;
+  --color-white-pure: #FDFBF8;
+  --color-slate: #3A4A5C;
+  --color-muted: #7A7060;
+  --color-line: rgba(168, 132, 74, 0.15);
+  --color-line-light: rgba(168, 132, 74, 0.08);
+}
+
+@layer base {
+  body {
+    @apply bg-bone text-navy font-sans antialiased selection:bg-gold selection:text-white cursor-default;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  h1, h2, h3, h4 {
+    @apply font-serif font-light tracking-tight;
+  }
+
+  /* Custom Scrollbar - Institutional Elegance */
+  ::-webkit-scrollbar {
+    width: 3px;
+  }
+  ::-webkit-scrollbar-track {
+    @apply bg-bone;
+  }
+  ::-webkit-scrollbar-thumb {
+    @apply bg-gold/30 hover:bg-gold transition-colors;
+  }
+
+  .text-mono-label {
+    @apply font-mono text-[9px] uppercase tracking-[3px];
+  }
+}
+
+@layer components {
+  .btn-gold {
+    @apply font-mono text-[9px] uppercase tracking-[3px] bg-gold text-white px-10 py-5 transition-all hover:bg-gold-light hover:shadow-xl hover:-translate-y-px active:translate-y-0 cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed;
+  }
+
+  .btn-ghost {
+    @apply font-mono text-[9px] uppercase tracking-[3px] bg-transparent text-white border border-white/20 px-10 py-5 transition-all hover:border-gold-light hover:text-gold-light hover:bg-white/5 cursor-pointer;
+  }
+
+  .section-label {
+    @apply font-mono text-[10px] uppercase tracking-[4px] text-gold mb-8 block;
+  }
+
+  .nav-item {
+    @apply font-mono text-[9px] uppercase tracking-[2.5px] text-navy/60 hover:text-navy transition-colors relative after:absolute after:bottom-[-4px] after:left-0 after:w-0 after:h-[1px] after:bg-gold after:transition-all hover:after:w-full;
+  }
+
+  .card-luxury {
+    @apply bg-white border border-line-light p-8 md:p-12 transition-all hover:shadow-2xl hover:border-line;
+  }
+}
+
+@keyframes kenburns {
+  0% { transform: scale(1.08) translateX(0); }
+  100% { transform: scale(1) translateX(-1%); }
+}
+
+@keyframes ticker {
+  from { transform: translateX(0); }
+  to { transform: translateX(-50%); }
+}
+
+.animate-kenburns {
+  animation: kenburns 12s ease-in-out forwards;
+}
+
+.animate-ticker {
+  animation: ticker 30s linear infinite;
+}

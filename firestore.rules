@@ -1,0 +1,96 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    
+    // 0. Global Safety Net
+    match /{document=**} {
+      allow read, write: if false;
+    }
+
+    // --- Helper Primitives ---
+    
+    function isSignedIn() {
+      return request.auth != null;
+    }
+
+    function isValidId(id) {
+      return id is string && id.size() <= 128 && id.matches('^[a-zA-Z0-9_\\-]+$');
+    }
+
+    function incoming() {
+      return request.resource.data;
+    }
+    
+    // Admin check - Carlos Uzcategui
+    // In production, we'd add his UID to an 'admins' collection
+    function isAdmin() {
+      return isSignedIn() && (
+        request.auth.token.email == 'contact@carlosre.com' && 
+        request.auth.token.email_verified == true
+      );
+    }
+
+    // --- Validation Blueprints ---
+
+    function isValidListing(data) {
+      return data.keys().hasAll(['name', 'email', 'phone', 'country', 'propertyType', 'priceTier', 'activeTimeline', 'timestamp']) &&
+             data.keys().size() == 8 &&
+             data.name is string && data.name.size() > 0 && data.name.size() <= 200 &&
+             data.email is string && data.email.size() <= 100 &&
+             data.phone is string && data.phone.size() <= 30 &&
+             data.country is string && data.country.size() <= 100 &&
+             data.propertyType is string &&
+             data.priceTier is string &&
+             data.activeTimeline is string &&
+             data.timestamp == request.time;
+    }
+
+    function isValidBuyerRequest(data) {
+      return data.keys().hasAll(['name', 'email', 'phone', 'budget', 'zones', 'timestamp']) &&
+             data.keys().size() == 6 &&
+             data.name is string && data.name.size() <= 200 &&
+             data.email is string && data.email.size() <= 100 &&
+             data.budget is string &&
+             data.zones is list && data.zones.size() <= 20 &&
+             data.timestamp == request.time;
+    }
+
+    function isValidReferral(data) {
+      return data.keys().hasAll(['name', 'agency', 'email', 'country', 'timestamp']) &&
+             data.keys().size() <= 6 && // Optional message
+             data.name is string && data.name.size() <= 200 &&
+             data.agency is string && data.agency.size() <= 200 &&
+             data.email is string &&
+             data.timestamp == request.time;
+    }
+
+    // --- Collection Rules ---
+
+    match /listings/{listingId} {
+      allow create: if isValidListing(incoming());
+      allow get, list, update, delete: if isAdmin();
+    }
+
+    match /buyer_requests/{requestId} {
+      allow create: if isValidBuyerRequest(incoming());
+      allow get, list, update, delete: if isAdmin();
+    }
+
+    match /referrals/{referralId} {
+      allow create: if isValidReferral(incoming());
+      allow get, list, update, delete: if isAdmin();
+    }
+
+    match /leads/{leadId} {
+      allow create: if incoming().keys().hasAll(['name', 'email', 'timestamp']) &&
+                      incoming().timestamp == request.time;
+      allow get, list, update, delete: if isAdmin();
+    }
+
+    match /calls/{callId} {
+      allow create: if incoming().keys().hasAll(['agentId', 'transcript', 'timestamp']) &&
+                      incoming().timestamp == request.time;
+      allow get, list, update, delete: if isAdmin();
+    }
+  }
+}

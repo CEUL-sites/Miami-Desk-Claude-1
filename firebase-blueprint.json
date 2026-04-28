@@ -1,0 +1,95 @@
+{
+  "entities": {
+    "listing": {
+      "title": "Property Listing Intake",
+      "description": "Details of a property provided by a seller or agency for activation.",
+      "type": "object",
+      "properties": {
+        "name": { "type": "string" },
+        "email": { "type": "string", "format": "email" },
+        "phone": { "type": "string" },
+        "country": { "type": "string" },
+        "propertyType": { "type": "string" },
+        "priceTier": { "type": "string" },
+        "activeTimeline": { "type": "string" },
+        "timestamp": { "type": "string", "format": "date-time" }
+      },
+      "required": ["name", "email", "phone", "country", "propertyType", "priceTier", "activeTimeline", "timestamp"]
+    },
+    "buyer_request": {
+      "title": "Buyer Mandate",
+      "description": "Requirements for a property search in South Florida.",
+      "type": "object",
+      "properties": {
+        "name": { "type": "string" },
+        "email": { "type": "string", "format": "email" },
+        "phone": { "type": "string" },
+        "budget": { "type": "string" },
+        "zones": { "type": "array", "items": { "type": "string" } },
+        "timestamp": { "type": "string", "format": "date-time" }
+      },
+      "required": ["name", "email", "phone", "budget", "zones", "timestamp"]
+    },
+    "referral": {
+      "title": "B2B Broker Referral",
+      "description": "Referral or co-branding request from an international agency.",
+      "type": "object",
+      "properties": {
+        "name": { "type": "string" },
+        "agency": { "type": "string" },
+        "email": { "type": "string", "format": "email" },
+        "country": { "type": "string" },
+        "message": { "type": "string" },
+        "timestamp": { "type": "string", "format": "date-time" }
+      },
+      "required": ["name", "agency", "email", "country", "timestamp"]
+    },
+    "call": {
+      "title": "Voice Agent Transcript",
+      "description": "Session transcript and metadata from a voice agent call.",
+      "type": "object",
+      "properties": {
+        "agentId": { "type": "string" },
+        "transcript": { "type": "string" },
+        "intent": { "type": "string" },
+        "contactInfo": { "type": "object" },
+        "timestamp": { "type": "string", "format": "date-time" }
+      },
+      "required": ["agentId", "transcript", "timestamp"]
+    },
+    "lead": {
+      "title": "General Lead",
+      "description": "Generic inquiry from the website contact forms.",
+      "type": "object",
+      "properties": {
+        "name": { "type": "string" },
+        "email": { "type": "string", "format": "email" },
+        "message": { "type": "string" },
+        "timestamp": { "type": "string", "format": "date-time" }
+      },
+      "required": ["name", "email", "timestamp"]
+    }
+  },
+  "firestore": {
+    "/listings/{listingId}": {
+      "schema": "listing",
+      "description": "Collection of property activation requests."
+    },
+    "/buyer_requests/{requestId}": {
+      "schema": "buyer_request",
+      "description": "Collection of buyer search mandates."
+    },
+    "/referrals/{referralId}": {
+      "schema": "referral",
+      "description": "Collection of agency partner requests."
+    },
+    "/calls/{callId}": {
+      "schema": "call",
+      "description": "Collection of voice agent session logs."
+    },
+    "/leads/{leadId}": {
+      "schema": "lead",
+      "description": "Collection of general inquiries."
+    }
+  }
+}
