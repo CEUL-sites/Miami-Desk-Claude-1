@@ -92,7 +92,10 @@ export async function fetchListings(filter: ListingFilter = {}): Promise<RawList
     const queryString = params.toString();
     const res = await fetch(`/api/bridge/listings${queryString ? `?${queryString}` : ""}`);
     
-    if (!res.ok) throw new Error("Failed to fetch from proxy");
+    if (!res.ok) {
+      const errorData = await res.json().catch(() => ({}));
+      throw new Error(errorData.details || errorData.error || "Failed to fetch from proxy");
+    }
     const data = await res.json();
     
     const listingsResult = data.bundle || data.value;

@@ -1,8 +1,7 @@
 import React, { useState } from "react";
 import { motion, AnimatePresence } from "motion/react";
 import { ArrowRight, CheckCircle2, AlertCircle, Loader2 } from "lucide-react";
-import { collection, addDoc, serverTimestamp } from "firebase/firestore";
-import { db } from "@/src/lib/firebase"; 
+import { submitLead } from "@/src/lib/leads"; 
 import type { Translation } from "@/src/translations";
 import { cn } from "@/src/lib/utils";
 
@@ -15,14 +14,22 @@ const ContactUs: React.FC<{ t: Translation }> = ({ t }) => {
     setStatus("submitting");
 
     try {
-      await addDoc(collection(db, "leads"), {
-        ...formData,
-        timestamp: serverTimestamp(),
+      const result = await submitLead({
+        type: 'contact_general',
+        name: formData.name,
+        email: formData.email,
+        message: formData.message,
+        details: formData
       });
-      setStatus("success");
-      setFormData({ name: "", email: "", message: "" });
+      
+      if (result.ok) {
+        setStatus("success");
+        setFormData({ name: "", email: "", message: "" });
+      } else {
+        setStatus("error");
+      }
     } catch (error) {
-      console.error("Firestore Error:", error);
+      console.error("Submission Error:", error);
       setStatus("error");
     }
   };

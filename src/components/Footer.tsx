@@ -19,11 +19,18 @@ export default function Footer() {
           under United Realty Group (Lic. # BK3015406). Institutional agreements and distribution mandates are strictly confidential.
         </p>
 
-        <div className="flex flex-wrap gap-8 opacity-20">
-           <span className="font-mono text-[8px] tracking-[2.5px] uppercase text-white">Equal Housing Opportunity</span>
-           <span className="font-mono text-[8px] tracking-[2.5px] uppercase text-white">REALTOR®</span>
-           <span className="font-mono text-[8px] tracking-[2.5px] uppercase text-white">CLHMS</span>
-           <span className="font-mono text-[8px] tracking-[2.5px] uppercase text-white">Miami REALTORS®</span>
+        <div className="flex flex-wrap gap-8 items-center">
+           <img 
+             src="/clhms-logo.png" 
+             alt="Certified Luxury Home Marketing Specialist" 
+             className="h-16 w-auto opacity-80 hover:opacity-100 transition-opacity"
+           />
+           <div className="flex flex-wrap gap-8 opacity-20">
+              <span className="font-mono text-[8px] tracking-[2.5px] uppercase text-white">Equal Housing Opportunity</span>
+              <span className="font-mono text-[8px] tracking-[2.5px] uppercase text-white">REALTOR®</span>
+              <span className="font-mono text-[8px] tracking-[2.5px] uppercase text-white">CLHMS</span>
+              <span className="font-mono text-[8px] tracking-[2.5px] uppercase text-white">Miami REALTORS®</span>
+           </div>
         </div>
       </div>
 

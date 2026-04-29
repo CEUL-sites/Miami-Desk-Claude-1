@@ -92,5 +92,11 @@ service cloud.firestore {
                       incoming().timestamp == request.time;
       allow get, list, update, delete: if isAdmin();
     }
+
+    match /home_valuations/{valuationId} {
+      allow create: if incoming().keys().hasAll(['address', 'city', 'name', 'email', 'timestamp']) &&
+                      incoming().timestamp == request.time;
+      allow get, list, update, delete: if isAdmin();
+    }
   }
 }

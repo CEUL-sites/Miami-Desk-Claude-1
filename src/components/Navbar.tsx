@@ -23,17 +23,17 @@ export default function Navbar({ locale, setLocale, t }: NavbarProps) {
   }, []);
 
   const navLinks = [
-    { name: t.nav.sell, href: "#listings" },
+    { name: t.nav.sell, href: "#valuation" },
     { name: t.nav.international, href: "#international" },
-    { name: "Network", href: "#network" },
+    { name: t.nav.listings, href: "#listings" },
     { name: t.nav.intelligence, href: "#intelligence" },
     { name: t.nav.about, href: "#about" },
   ];
 
-  const languages: { code: Locale; label: string }[] = [
-    { code: "en", label: "EN" },
-    { code: "es", label: "ES" },
-    { code: "pt", label: "PT" },
+  const languages: { code: Locale; label: string; full: string }[] = [
+    { code: "en", label: "EN", full: "English" },
+    { code: "es", label: "ES", full: "Español" },
+    { code: "pt", label: "PT", full: "Português" },
   ];
 
   return (
@@ -75,19 +75,30 @@ export default function Navbar({ locale, setLocale, t }: NavbarProps) {
 
         {/* Desktop Actions */}
         <div className="hidden lg:flex items-center gap-8">
-          <div className="flex items-center gap-4">
+          <div className="flex items-center bg-black/5 rounded-full p-1 border border-black/5">
             {languages.map((lang) => (
               <button
                 key={lang.code}
                 onClick={() => setLocale(lang.code)}
+                title={lang.full}
                 className={cn(
-                  "font-mono text-[9px] tracking-[1.5px] transition-all py-1",
+                  "relative font-mono text-[9px] tracking-[1.5px] px-3 py-1.5 transition-colors duration-300",
                   locale === lang.code 
-                    ? (isScrolled ? "text-gold border-b border-gold" : "text-gold-light border-b border-gold-light") 
-                    : (isScrolled ? "text-navy/30 hover:text-navy" : "text-white/30 hover:text-white")
+                    ? (isScrolled ? "text-white" : "text-navy") 
+                    : (isScrolled ? "text-navy/40 hover:text-navy" : "text-white/40 hover:text-white")
                 )}
               >
-                {lang.label}
+                <span className="relative z-10">{lang.label}</span>
+                {locale === lang.code && (
+                  <motion.span
+                    layoutId="lang-pill"
+                    className={cn(
+                      "absolute inset-0 rounded-full z-0",
+                      isScrolled ? "bg-navy" : "bg-gold-light"
+                    )}
+                    transition={{ type: "spring", bounce: 0.2, duration: 0.6 }}
+                  />
+                )}
               </button>
             ))}
           </div>
@@ -138,7 +149,7 @@ export default function Navbar({ locale, setLocale, t }: NavbarProps) {
               </a>
             ))}
             <div className="pt-6 border-t border-gold/10 flex flex-col gap-8">
-              <div className="flex items-center gap-8">
+              <div className="flex items-center bg-white/5 rounded-full p-1 border border-white/5 self-start">
                 {languages.map((lang) => (
                   <button
                     key={lang.code}
@@ -147,11 +158,18 @@ export default function Navbar({ locale, setLocale, t }: NavbarProps) {
                       setIsMobileMenuOpen(false);
                     }}
                     className={cn(
-                      "font-mono text-xs tracking-widest",
-                      locale === lang.code ? "text-gold underline" : "text-white/40"
+                      "relative font-mono text-xs tracking-widest px-6 py-3 transition-colors duration-300",
+                      locale === lang.code ? "text-navy" : "text-white/40"
                     )}
                   >
-                    {lang.label}
+                    <span className="relative z-10">{lang.label}</span>
+                    {locale === lang.code && (
+                      <motion.span
+                        layoutId="lang-pill-mobile"
+                        className="absolute inset-0 bg-gold rounded-full z-0"
+                        transition={{ type: "spring", bounce: 0.2, duration: 0.6 }}
+                      />
+                    )}
                   </button>
                 ))}
               </div>

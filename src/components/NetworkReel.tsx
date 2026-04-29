@@ -2,9 +2,21 @@ import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "motion/react";
 
 const SLIDES = [
-  { id: "ag1", bg: "linear-gradient(155deg, #050A15 0%, #0A1828 25%, #102540 45%, #183858 60%, #205080 78%, #3878B0 92%, #60A8E0 100%)" },
-  { id: "ag2", bg: "linear-gradient(170deg, #030810 0%, #060F1E 25%, #0A1830 45%, #102840 60%, #1A3850 78%, #2A5070 92%, #4888B0 100%)" },
-  { id: "ag3", bg: "linear-gradient(160deg, #060408 0%, #110A0F 25%, #201015 45%, #381520 60%, #581830 75%, #882848 88%, #B05878 100%)" },
+  { 
+    id: "ag1", 
+    url: "/images/network/miami-aerial-night.jpg",
+    fallback: "https://images.unsplash.com/photo-1514214246283-d427a95c5d2f?auto=format&fit=crop&q=80&w=2000"
+  },
+  { 
+    id: "ag2", 
+    url: "/images/network/coral-gables-aerial-day.jpg",
+    fallback: "https://images.unsplash.com/photo-1535498730771-e735b998cd64?auto=format&fit=crop&q=80&w=2000"
+  },
+  { 
+    id: "ag3", 
+    url: "/images/network/sunny-isles-towers.jpg",
+    fallback: "https://images.unsplash.com/photo-1549467793-02079e2b58ea?auto=format&fit=crop&q=80&w=2000"
+  },
 ];
 
 export default function NetworkReel() {
@@ -27,8 +39,10 @@ export default function NetworkReel() {
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             transition={{ duration: 1.5, ease: "easeInOut" }}
-            className="absolute inset-[-8%] animate-kenburns"
-            style={{ background: SLIDES[currentSlide].bg, backgroundSize: 'cover' }}
+            className="absolute inset-[-8%] animate-kenburns bg-cover bg-center"
+            style={{ 
+              backgroundImage: `url(${SLIDES[currentSlide].url}), url(${SLIDES[currentSlide].fallback})`
+            }}
           />
         </AnimatePresence>
         <div className="absolute inset-0 bg-gradient-to-b from-navy/45 via-navy/20 to-navy/75 z-1" />

@@ -16,13 +16,10 @@ export default function StatBlock({ t }: StatBlockProps) {
         className="relative"
       >
         <div className="font-serif text-[clamp(8rem,18vw,16rem)] font-light text-gold leading-none tracking-[-4px] relative inline-block">
-          {t.buyerArgument.stat}
-          <span className="absolute top-[0.1em] -right-[0.3em] text-[0.3em] text-gold-light tracking-normal">
-            {t.buyerArgument.statPercent}
-          </span>
+          {t.buyerMath.stat}
         </div>
         <p className="font-mono text-[10px] uppercase tracking-[2px] text-white/25 mt-2">
-          {t.buyerArgument.statLabel}
+          {t.buyerMath.statLabel}
         </p>
       </motion.div>
 
@@ -32,16 +29,15 @@ export default function StatBlock({ t }: StatBlockProps) {
         viewport={{ once: true }}
         transition={{ duration: 0.8, delay: 0.1 }}
       >
-        <h2 className="text-white text-4xl md:text-5xl lg:text-6xl leading-[1.2] mb-6">
-          {t.buyerArgument.title1}<br />
-          <em className="italic text-gold-light">{t.buyerArgument.title2}</em>
+        <h2 className="text-white text-4xl md:text-5xl lg:text-5xl leading-[1.2] mb-6">
+          {t.buyerMath.title}
         </h2>
         <p className="text-white/55 text-sm md:text-base leading-[1.9] mb-4 font-light">
-          {t.buyerArgument.body}
+          {t.buyerMath.body}
         </p>
         <div className="mt-8 p-6 border-l border-gold bg-gold/5">
           <p className="text-white/75 text-sm md:text-base leading-[1.8] font-light italic">
-            {t.buyerArgument.insight}
+            "{t.buyerMath.quote}"
           </p>
         </div>
       </motion.div>
