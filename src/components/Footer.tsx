@@ -1,55 +1,49 @@
-import { motion } from "motion/react";
+import { siteContent } from "@/src/content/site";
 
 export default function Footer() {
   return (
-    <footer className="bg-[#050C16] py-20 px-[7vw] flex flex-wrap justify-between items-start gap-16 border-t border-gold/10">
-      <div className="max-w-[700px] flex flex-col gap-10">
-        <div className="flex flex-col gap-4">
-          <p className="font-serif text-[1.4rem] font-light text-white">
-            Miami<span className="text-gold italic">Desk</span>
+    <footer className="bg-[#050C16] py-20 px-[7vw] border-t border-gold/10">
+      <div className="max-w-[1440px] mx-auto grid grid-cols-1 lg:grid-cols-[1.1fr_0.9fr] gap-16">
+        <div className="max-w-[760px] flex flex-col gap-8">
+          <div>
+            <p className="font-serif text-[1.6rem] font-light text-white">
+              Miami<span className="text-gold italic">Desk</span>
+            </p>
+            <p className="font-mono text-[8.5px] leading-[2.2] text-white/25 tracking-[2px] uppercase mt-4">
+              South Florida seller exposure platform with Madrid / Spain-facing referral positioning
+            </p>
+          </div>
+
+          <p className="font-mono text-[9px] leading-[2.2] text-white/30 tracking-[1px] font-light">
+            {siteContent.licenseDisplay}. Associate with {siteContent.brokerage}. The Miami Desk is a professional seller intake and exposure platform for South Florida property owners and international referral conversations. MLS, portal, language, and association statistics should be verified before publishing any expanded claim.
           </p>
-          <p className="font-mono text-[8.5px] leading-[2.4] text-white/20 tracking-[2px] uppercase">
-            Institutional Activation Hub for International Agency Partners
+
+          <div className="flex flex-wrap gap-6 opacity-35">
+            <span className="font-mono text-[8px] tracking-[2.5px] uppercase text-white">Equal Housing Opportunity</span>
+            <span className="font-mono text-[8px] tracking-[2.5px] uppercase text-white">REALTOR®</span>
+            <span className="font-mono text-[8px] tracking-[2.5px] uppercase text-white">United Realty Group</span>
+          </div>
+        </div>
+
+        <div className="flex flex-col gap-6 lg:items-end lg:text-right">
+          <div>
+            <span className="font-mono text-[8px] tracking-[3px] uppercase text-gold/50 mb-2 block">Direct Phone / WhatsApp</span>
+            <a href={siteContent.directPhoneHref} className="font-serif text-2xl text-white/85 hover:text-gold transition-colors italic">
+              {siteContent.directPhoneDisplay}
+            </a>
+          </div>
+          <div>
+            <span className="font-mono text-[8px] tracking-[3px] uppercase text-gold/50 mb-2 block">Email</span>
+            <a href={`mailto:${siteContent.email}`} className="font-serif text-2xl text-white/85 hover:text-gold transition-colors italic">
+              {siteContent.email}
+            </a>
+          </div>
+          <a href="#valuation" className="font-mono text-[9px] tracking-[3px] uppercase text-gold hover:text-white transition-colors border-b border-gold/30 pb-1 w-fit">
+            Request Seller Strategy Review
+          </a>
+          <p className="font-mono text-[8px] tracking-[2px] uppercase text-white/25 leading-relaxed">
+            {siteContent.officeAddress}
           </p>
-        </div>
-
-        <p className="font-mono text-[9px] leading-[2.2] text-white/20 tracking-[1px] font-light">
-          Listing information is handled through the Internet Data Exchange Program of Miami and South Florida REALTORS®. 
-          While deemed reliable, all data should be independently verified. Carlos Uzcategui operates as a Licensed Realtor® 
-          under United Realty Group (Lic. # BK3015406). Institutional agreements and distribution mandates are strictly confidential.
-        </p>
-
-        <div className="flex flex-wrap gap-8 opacity-20">
-           <span className="font-mono text-[8px] tracking-[2.5px] uppercase text-white">Equal Housing Opportunity</span>
-           <span className="font-mono text-[8px] tracking-[2.5px] uppercase text-white">REALTOR®</span>
-           <span className="font-mono text-[8px] tracking-[2.5px] uppercase text-white">CLHMS</span>
-           <span className="font-mono text-[8px] tracking-[2.5px] uppercase text-white">Miami REALTORS®</span>
-        </div>
-      </div>
-
-      <div className="flex flex-col gap-6">
-        <div className="flex flex-col gap-1">
-          <span className="font-mono text-[8px] tracking-[3px] uppercase text-gold/40 mb-2">Primary Desk</span>
-          <a href="tel:+19544502000" className="font-serif text-2xl text-white/80 hover:text-gold transition-colors italic">
-            +1 954 450 2000
-          </a>
-        </div>
-        <div className="flex flex-col gap-1">
-          <span className="font-mono text-[8px] tracking-[3px] uppercase text-gold/40 mb-2">Activation Office</span>
-          <a href="mailto:contact@carlosre.com" className="font-serif text-2xl text-white/80 hover:text-gold transition-colors italic">
-            contact@carlosre.com
-          </a>
-        </div>
-        <div className="flex flex-col gap-1 mt-4">
-          <a href="#contact" className="font-mono text-[9px] tracking-[3px] uppercase text-gold hover:text-white transition-colors border-b border-gold/30 pb-1 w-fit">
-            Open Direct Mandate →
-          </a>
-        </div>
-        <div className="mt-6">
-           <p className="font-mono text-[8px] tracking-[2px] uppercase text-white/20">
-             15951 SW 41 St #700<br />
-             Weston, Florida 33331
-           </p>
         </div>
       </div>
     </footer>
