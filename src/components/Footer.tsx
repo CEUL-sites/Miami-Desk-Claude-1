@@ -23,18 +23,6 @@ export default function Footer() {
             <span className="font-mono text-[8px] tracking-[2.5px] uppercase text-white">REALTOR®</span>
             <span className="font-mono text-[8px] tracking-[2.5px] uppercase text-white">United Realty Group</span>
           </div>
-        <div className="flex flex-wrap gap-8 items-center">
-           <img 
-             src="/clhms-logo.png" 
-             alt="Certified Luxury Home Marketing Specialist" 
-             className="h-16 w-auto opacity-80 hover:opacity-100 transition-opacity"
-           />
-           <div className="flex flex-wrap gap-8 opacity-20">
-              <span className="font-mono text-[8px] tracking-[2.5px] uppercase text-white">Equal Housing Opportunity</span>
-              <span className="font-mono text-[8px] tracking-[2.5px] uppercase text-white">REALTOR®</span>
-              <span className="font-mono text-[8px] tracking-[2.5px] uppercase text-white">CLHMS</span>
-              <span className="font-mono text-[8px] tracking-[2.5px] uppercase text-white">Miami REALTORS®</span>
-           </div>
         </div>
 
         <div className="flex flex-col gap-6 lg:items-end lg:text-right">

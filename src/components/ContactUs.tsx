@@ -1,41 +1,6 @@
 import { motion } from "motion/react";
 import { ArrowRight, Mail, MessageCircle, Phone } from "lucide-react";
 import { siteContent } from "@/src/content/site";
-import React, { useState } from "react";
-import { motion, AnimatePresence } from "motion/react";
-import { ArrowRight, CheckCircle2, AlertCircle, Loader2 } from "lucide-react";
-import { submitLead } from "@/src/lib/leads"; 
-import type { Translation } from "@/src/translations";
-import { cn } from "@/src/lib/utils";
-
-const ContactUs: React.FC<{ t: Translation }> = ({ t }) => {
-  const [formData, setFormData] = useState({ name: "", email: "", message: "" });
-  const [status, setStatus] = useState<"idle" | "submitting" | "success" | "error">("idle");
-
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setStatus("submitting");
-
-    try {
-      const result = await submitLead({
-        type: 'contact_general',
-        name: formData.name,
-        email: formData.email,
-        message: formData.message,
-        details: formData
-      });
-      
-      if (result.ok) {
-        setStatus("success");
-        setFormData({ name: "", email: "", message: "" });
-      } else {
-        setStatus("error");
-      }
-    } catch (error) {
-      console.error("Submission Error:", error);
-      setStatus("error");
-    }
-  };
 
 export default function ContactUs() {
   return (
