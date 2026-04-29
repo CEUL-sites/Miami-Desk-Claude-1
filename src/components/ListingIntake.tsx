@@ -75,17 +75,19 @@ export default function ListingIntake({ t, locale }: ListingIntakeProps) {
   };
 
   const onSubmit = async (data: FormData) => {
-    const success = await submitLead({
-      type: 'listing',
+    const result = await submitLead({
+      type: 'listing_intake',
       name: data.name,
       email: data.email,
       phone: data.phone,
       country: data.country,
-      language: locale,
-      details: data,
-      timestamp: new Date().toISOString()
+      message: data.message,
+      propertyType: data.propertyType,
+      priceTier: data.priceTier,
+      timeline: data.activeTimeline,
+      details: data
     });
-    if (success) setIsSubmitted(true);
+    if (result.ok) setIsSubmitted(true);
   };
 
   if (isSubmitted) {

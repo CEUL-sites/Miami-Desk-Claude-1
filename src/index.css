@@ -85,6 +85,18 @@
 
   .form-input {
     @apply w-full bg-white border border-line-light px-5 py-4 text-navy font-sans text-base outline-none transition-all focus:border-gold focus:ring-2 focus:ring-gold/10 placeholder:text-muted/45;
+  .hero-headline {
+    @apply font-serif font-light leading-[0.92] tracking-tight;
+    font-size: clamp(3rem, 9vw, 9.5rem);
+  }
+
+  .editorial-pull {
+    @apply font-serif font-light leading-[1.35] text-gold border-l border-gold pl-8 italic max-w-[38rem];
+    font-size: clamp(1.5rem, 3vw, 2.5rem);
+  }
+
+  .body-editorial {
+    @apply font-serif font-normal text-lg leading-[1.75] text-slate max-w-[36rem];
   }
 
   .no-scrollbar::-webkit-scrollbar {

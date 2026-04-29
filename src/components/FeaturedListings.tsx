@@ -6,8 +6,39 @@ import type { Translation } from "@/src/translations";
 import { cn } from "@/src/lib/utils";
 
 const ListingCard: React.FC<{ listing: RawListing; t: Translation }> = ({ listing, t }) => {
+  const images = listing.Media?.length 
+    ? listing.Media.map(m => m.MediaURL) 
+    : ["https://images.unsplash.com/photo-1582407947304-fd86f028f716?auto=format&fit=crop&q=80&w=1200"];
+
   const [isQuickViewOpen, setIsQuickViewOpen] = useState(false);
-  const [activeImageIdx, setActiveImageIdx] = useState(0);
+  const [[page, direction], setPage] = useState([0, 0]);
+  const activeImageIdx = ((page % images.length) + images.length) % images.length;
+
+  const paginate = (newDirection: number) => {
+    setPage([page + newDirection, newDirection]);
+  };
+
+  const variants = {
+    enter: (direction: number) => ({
+      x: direction > 0 ? 1000 : -1000,
+      opacity: 0
+    }),
+    center: {
+      zIndex: 1,
+      x: 0,
+      opacity: 1
+    },
+    exit: (direction: number) => ({
+      zIndex: 0,
+      x: direction < 0 ? 1000 : -1000,
+      opacity: 0
+    })
+  };
+
+  const swipeConfidenceThreshold = 10000;
+  const swipePower = (offset: number, velocity: number) => {
+    return Math.abs(offset) * velocity;
+  };
 
   const translatedPropertyType = t.listings.propertyTypes[listing.PropertyType] || listing.PropertyType;
   const locationKey = listing.SubdivisionName || listing.City;
@@ -18,10 +49,6 @@ const ListingCard: React.FC<{ listing: RawListing; t: Translation }> = ({ listin
     currency: "USD",
     maximumFractionDigits: 0,
   }).format(listing.ListPrice);
-
-  const images = listing.Media?.length 
-    ? listing.Media.map(m => m.MediaURL) 
-    : ["https://images.unsplash.com/photo-1582407947304-fd86f028f716?auto=format&fit=crop&q=80&w=1200"];
 
   return (
     <>
@@ -101,42 +128,69 @@ const ListingCard: React.FC<{ listing: RawListing; t: Translation }> = ({ listin
               </button>
 
               {/* Gallery Side */}
-              <div className="relative h-[300px] lg:h-full bg-navy overflow-hidden">
-                <AnimatePresence mode="wait">
+              <div className="relative h-[300px] lg:h-full bg-navy overflow-hidden touch-none">
+                <AnimatePresence initial={false} custom={direction}>
                   <motion.img
-                    key={activeImageIdx}
+                    key={page}
                     src={images[activeImageIdx]}
-                    initial={{ opacity: 0 }}
-                    animate={{ opacity: 1 }}
-                    exit={{ opacity: 0 }}
-                    transition={{ duration: 0.5 }}
-                    className="absolute inset-0 w-full h-full object-cover"
+                    custom={direction}
+                    variants={variants}
+                    initial="enter"
+                    animate="center"
+                    exit="exit"
+                    transition={{
+                      x: { type: "spring", stiffness: 300, damping: 30 },
+                      opacity: { duration: 0.2 }
+                    }}
+                    drag="x"
+                    dragConstraints={{ left: 0, right: 0 }}
+                    dragElastic={1}
+                    onDragEnd={(e, { offset, velocity }) => {
+                      const swipe = swipePower(offset.x, velocity.x);
+
+                      if (swipe < -swipeConfidenceThreshold) {
+                        paginate(1);
+                      } else if (swipe > swipeConfidenceThreshold) {
+                        paginate(-1);
+                      }
+                    }}
+                    className="absolute inset-0 w-full h-full object-cover cursor-grab active:cursor-grabbing"
                   />
                 </AnimatePresence>
 
                 {images.length > 1 && (
                   <>
-                    <div className="absolute inset-x-0 bottom-8 flex justify-center gap-2 z-20">
+                    <div className="absolute inset-x-0 bottom-8 flex justify-center gap-2 z-20 pointer-events-none">
                       {images.map((_, idx) => (
                         <button
                           key={idx}
-                          onClick={() => setActiveImageIdx(idx)}
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            const diff = idx - activeImageIdx;
+                            if (diff !== 0) paginate(diff);
+                          }}
                           className={cn(
-                            "w-12 h-1 transition-all",
+                            "w-12 h-1 transition-all pointer-events-auto",
                             activeImageIdx === idx ? "bg-gold" : "bg-white/20 hover:bg-white/40"
                           )}
                         />
                       ))}
                     </div>
                     <button 
-                      onClick={() => setActiveImageIdx(prev => (prev > 0 ? prev - 1 : images.length - 1))}
-                      className="absolute left-6 top-1/2 -translate-y-1/2 p-3 bg-navy/40 text-white backdrop-blur-md hover:bg-gold transition-all"
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        paginate(-1);
+                      }}
+                      className="absolute left-6 top-1/2 -translate-y-1/2 z-20 p-3 bg-navy/40 text-white backdrop-blur-md hover:bg-gold transition-all"
                     >
                       <ChevronLeft className="w-5 h-5" />
                     </button>
                     <button 
-                      onClick={() => setActiveImageIdx(prev => (prev < images.length - 1 ? prev + 1 : 0))}
-                      className="absolute right-6 top-1/2 -translate-y-1/2 p-3 bg-navy/40 text-white backdrop-blur-md hover:bg-gold transition-all"
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        paginate(1);
+                      }}
+                      className="absolute right-6 top-1/2 -translate-y-1/2 z-20 p-3 bg-navy/40 text-white backdrop-blur-md hover:bg-gold transition-all"
                     >
                       <ChevronRight className="w-5 h-5" />
                     </button>

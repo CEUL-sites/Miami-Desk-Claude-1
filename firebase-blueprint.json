@@ -68,6 +68,28 @@
         "timestamp": { "type": "string", "format": "date-time" }
       },
       "required": ["name", "email", "timestamp"]
+    },
+    "home_valuation": {
+      "title": "Home Valuation Request",
+      "description": "Detailed request for property valuation from a South Florida seller.",
+      "type": "object",
+      "properties": {
+        "address": { "type": "string" },
+        "city": { "type": "string" },
+        "zip": { "type": "string" },
+        "beds": { "type": "string" },
+        "baths": { "type": "string" },
+        "sqft": { "type": "string" },
+        "propertyType": { "type": "string" },
+        "yearBuilt": { "type": "string" },
+        "name": { "type": "string" },
+        "email": { "type": "string", "format": "email" },
+        "phone": { "type": "string" },
+        "timeline": { "type": "string" },
+        "notes": { "type": "string" },
+        "timestamp": { "type": "string", "format": "date-time" }
+      },
+      "required": ["address", "city", "name", "email", "timestamp"]
     }
   },
   "firestore": {
@@ -90,6 +112,10 @@
     "/leads/{leadId}": {
       "schema": "lead",
       "description": "Collection of general inquiries."
+    },
+    "/home_valuations/{valuationId}": {
+      "schema": "home_valuation",
+      "description": "Collection of seller home valuation requests."
     }
   }
 }

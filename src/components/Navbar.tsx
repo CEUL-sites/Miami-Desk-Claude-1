@@ -27,12 +27,17 @@ export default function Navbar({ locale, setLocale, t: _t }: NavbarProps) {
     { name: "Strategy", href: "#strategy" },
     { name: "Miami Desk", href: "#miami-desk" },
     { name: "AI Desk", href: "#intelligence" },
+    { name: t.nav.sell, href: "#valuation" },
+    { name: t.nav.international, href: "#international" },
+    { name: t.nav.listings, href: "#listings" },
+    { name: t.nav.intelligence, href: "#intelligence" },
+    { name: t.nav.about, href: "#about" },
   ];
 
-  const languages: { code: Locale; label: string }[] = [
-    { code: "en", label: "EN" },
-    { code: "es", label: "ES" },
-    { code: "pt", label: "PT" },
+  const languages: { code: Locale; label: string; full: string }[] = [
+    { code: "en", label: "EN", full: "English" },
+    { code: "es", label: "ES", full: "Español" },
+    { code: "pt", label: "PT", full: "Português" },
   ];
 
   return (
@@ -60,6 +65,32 @@ export default function Navbar({ locale, setLocale, t: _t }: NavbarProps) {
             {languages.map((lang) => (
               <button key={lang.code} onClick={() => setLocale(lang.code)} className={cn("font-mono text-[9px] tracking-[1.5px] py-1", locale === lang.code ? "text-gold border-b border-gold" : isScrolled ? "text-navy/30 hover:text-navy" : "text-white/30 hover:text-white")}>
                 {lang.label}
+        {/* Desktop Actions */}
+        <div className="hidden lg:flex items-center gap-8">
+          <div className="flex items-center bg-black/5 rounded-full p-1 border border-black/5">
+            {languages.map((lang) => (
+              <button
+                key={lang.code}
+                onClick={() => setLocale(lang.code)}
+                title={lang.full}
+                className={cn(
+                  "relative font-mono text-[9px] tracking-[1.5px] px-3 py-1.5 transition-colors duration-300",
+                  locale === lang.code 
+                    ? (isScrolled ? "text-white" : "text-navy") 
+                    : (isScrolled ? "text-navy/40 hover:text-navy" : "text-white/40 hover:text-white")
+                )}
+              >
+                <span className="relative z-10">{lang.label}</span>
+                {locale === lang.code && (
+                  <motion.span
+                    layoutId="lang-pill"
+                    className={cn(
+                      "absolute inset-0 rounded-full z-0",
+                      isScrolled ? "bg-navy" : "bg-gold-light"
+                    )}
+                    transition={{ type: "spring", bounce: 0.2, duration: 0.6 }}
+                  />
+                )}
               </button>
             ))}
           </div>
@@ -83,6 +114,38 @@ export default function Navbar({ locale, setLocale, t: _t }: NavbarProps) {
             ))}
             <p className="text-mono-label text-white/35 leading-relaxed">{siteContent.licenseDisplay}<br />{siteContent.brokerage}</p>
             <a href={siteContent.whatsappHref} className="btn-gold text-center py-5">WhatsApp Carlos</a>
+            <div className="pt-6 border-t border-gold/10 flex flex-col gap-8">
+              <div className="flex items-center bg-white/5 rounded-full p-1 border border-white/5 self-start">
+                {languages.map((lang) => (
+                  <button
+                    key={lang.code}
+                    onClick={() => {
+                      setLocale(lang.code);
+                      setIsMobileMenuOpen(false);
+                    }}
+                    className={cn(
+                      "relative font-mono text-xs tracking-widest px-6 py-3 transition-colors duration-300",
+                      locale === lang.code ? "text-navy" : "text-white/40"
+                    )}
+                  >
+                    <span className="relative z-10">{lang.label}</span>
+                    {locale === lang.code && (
+                      <motion.span
+                        layoutId="lang-pill-mobile"
+                        className="absolute inset-0 bg-gold rounded-full z-0"
+                        transition={{ type: "spring", bounce: 0.2, duration: 0.6 }}
+                      />
+                    )}
+                  </button>
+                ))}
+              </div>
+              <a
+                href="https://wa.me/19548656622"
+                className="btn-gold text-center py-5"
+              >
+                {t.nav.whatsapp}
+              </a>
+            </div>
           </motion.div>
         )}
       </AnimatePresence>

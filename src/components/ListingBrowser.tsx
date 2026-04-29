@@ -14,6 +14,9 @@ const ZONES = [
 const PROPERTY_TYPES = ["Residential", "Condominium", "Land"];
 
 export default function ListingBrowser({ t }: { t: Translation }) {
+  const zones = Object.entries(t.listings.locations).map(([id, label]) => ({ id, label }));
+  const propertyTypes = Object.entries(t.listings.propertyTypes).map(([id, label]) => ({ id, label }));
+
   const [activeZone, setActiveZone] = useState("All");
   const [activeType, setActiveType] = useState("Residential");
   const [listings, setListings] = useState<RawListing[]>([]);
@@ -31,11 +34,11 @@ export default function ListingBrowser({ t }: { t: Translation }) {
   }, [activeZone, activeType]);
 
   return (
-    <section id="listings-browser" className="bg-white py-28 px-[7vw] border-t border-line">
+    <section id="listings" className="bg-white py-28 px-[7vw] border-t border-line">
       <div className="mb-20">
-        <p className="section-label">Market Intelligence</p>
+        <p className="section-label">{t.nav.intelligence}</p>
         <h2 className="text-navy text-4xl md:text-5xl lg:text-6xl font-serif font-light leading-[1.2]">
-          Search Miami By Neighborhood
+          {t.valuation.title}
         </h2>
       </div>
 
@@ -44,18 +47,29 @@ export default function ListingBrowser({ t }: { t: Translation }) {
         {/* Zone Tabs */}
         <div className="flex overflow-x-auto pb-6 gap-6 no-scrollbar border-b border-line items-center">
           <span className="font-mono text-[9px] tracking-[2px] uppercase text-gold mr-4">Zones</span>
-          {ZONES.map((zone) => (
+          <button
+            onClick={() => setActiveZone("All")}
+            className={cn(
+              "whitespace-nowrap font-mono text-[10px] tracking-[2px] uppercase transition-all pb-4 border-b",
+              activeZone === "All" 
+                ? "border-gold text-navy" 
+                : "border-transparent text-slate/40 hover:text-navy"
+            )}
+          >
+            All
+          </button>
+          {zones.map((zone) => (
             <button
-              key={zone}
-              onClick={() => setActiveZone(zone)}
+              key={zone.id}
+              onClick={() => setActiveZone(zone.id)}
               className={cn(
                 "whitespace-nowrap font-mono text-[10px] tracking-[2px] uppercase transition-all pb-4 border-b",
-                activeZone === zone 
+                activeZone === zone.id 
                   ? "border-gold text-navy" 
                   : "border-transparent text-slate/40 hover:text-navy"
               )}
             >
-              {zone}
+              {zone.label}
             </button>
           ))}
         </div>
@@ -63,16 +77,16 @@ export default function ListingBrowser({ t }: { t: Translation }) {
         <div className="flex flex-col md:flex-row items-center justify-between gap-8">
           {/* Property Type Segmented Control */}
           <div className="flex bg-navy p-1">
-            {PROPERTY_TYPES.map((type) => (
+            {propertyTypes.map((type) => (
               <button
-                key={type}
-                onClick={() => setActiveType(type)}
+                key={type.id}
+                onClick={() => setActiveType(type.id)}
                 className={cn(
                   "px-6 py-2.5 font-mono text-[9px] tracking-[2px] uppercase transition-all transition-colors",
-                  activeType === type ? "bg-gold text-navy font-bold" : "text-white/40 hover:text-white"
+                  activeType === type.id ? "bg-gold text-navy font-bold" : "text-white/40 hover:text-white"
                 )}
               >
-                {type}
+                {type.label}
               </button>
             ))}
           </div>

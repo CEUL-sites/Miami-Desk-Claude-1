@@ -46,33 +46,38 @@ function handleFirestoreError(error: unknown, operationType: OperationType, path
   throw new Error(JSON.stringify(errInfo));
 }
 
-export interface LeadData {
-  type: 'listing' | 'buyer' | 'referral' | 'inquiry';
+export interface LeadPayload {
+  type: 'home_valuation' | 'listing_intake' | 'buyer_mandate' | 'contact_general' | 'ai_desk_handoff' | 'agency_referral' | 'whatsapp_click';
   name: string;
   email: string;
   phone?: string;
-  agency?: string;
-  country: string;
-  language: string;
+  country?: string;
+  language?: string;
+  city?: string;
+  propertyType?: string;
+  priceTier?: string;
+  timeline?: string;
   message?: string;
-  details: any;
-  timestamp: string;
+  details?: any;
 }
 
-export async function submitLead(data: LeadData) {
-  const collectionName = data.type === 'listing' ? 'listings' : 
-                        data.type === 'buyer' ? 'buyer_requests' :
-                        data.type === 'referral' ? 'referrals' : 'leads';
-
+export async function submitLead(payload: LeadPayload): Promise<{ ok: boolean }> {
   try {
-    const docRef = await addDoc(collection(db, collectionName), {
-        ...data,
-        timestamp: serverTimestamp()
+    const enriched = {
+      ...payload,
+      sourcePage: typeof window !== 'undefined' ? window.location.pathname : '',
+      userAgent: typeof navigator !== 'undefined' ? navigator.userAgent : '',
+      submittedAt: new Date().toISOString()
+    };
+    const res = await fetch('/api/lead', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(enriched)
     });
-    console.log("Lead submitted successfully, ID:", docRef.id);
-    return true;
-  } catch (error) {
-    handleFirestoreError(error, OperationType.WRITE, collectionName);
-    return false;
+    const json = await res.json();
+    return { ok: json.ok === true };
+  } catch (e) {
+    console.error('Lead submission failed:', e);
+    return { ok: false };
   }
 }
