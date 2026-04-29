@@ -8,6 +8,7 @@
 
   --color-bone: #F4EFE6;
   --color-bone-dark: #EDE7DB;
+  --color-bone-warm: #EFE6D8;
   --color-navy: #091828;
   --color-navy-light: #0D2137;
   --color-gold: #A8844A;
@@ -16,11 +17,18 @@
   --color-white-pure: #FDFBF8;
   --color-slate: #3A4A5C;
   --color-muted: #7A7060;
+  --color-graphite: #3D4652;
   --color-line: rgba(168, 132, 74, 0.15);
   --color-line-light: rgba(168, 132, 74, 0.08);
+
+  --shadow-3xl: 0 32px 80px rgba(9, 24, 40, 0.16);
 }
 
 @layer base {
+  html {
+    scroll-behavior: smooth;
+  }
+
   body {
     @apply bg-bone text-navy font-sans antialiased selection:bg-gold selection:text-white cursor-default;
     -webkit-font-smoothing: antialiased;
@@ -28,10 +36,9 @@
   }
 
   h1, h2, h3, h4 {
-    @apply font-serif font-light tracking-tight;
+    @apply font-serif font-light tracking-normal;
   }
 
-  /* Custom Scrollbar - Institutional Elegance */
   ::-webkit-scrollbar {
     width: 3px;
   }
@@ -68,6 +75,16 @@
     @apply bg-white border border-line-light p-8 md:p-12 transition-all hover:shadow-2xl hover:border-line;
   }
 
+  .body-editorial {
+    @apply font-serif text-xl leading-[1.75] text-slate max-w-[40rem];
+  }
+
+  .input-label {
+    @apply block font-mono text-[9px] uppercase tracking-[2.5px] text-muted mb-3;
+  }
+
+  .form-input {
+    @apply w-full bg-white border border-line-light px-5 py-4 text-navy font-sans text-base outline-none transition-all focus:border-gold focus:ring-2 focus:ring-gold/10 placeholder:text-muted/45;
   .hero-headline {
     @apply font-serif font-light leading-[0.92] tracking-tight;
     font-size: clamp(3rem, 9vw, 9.5rem);
